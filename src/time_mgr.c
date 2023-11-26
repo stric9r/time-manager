@@ -29,7 +29,7 @@ void time_mgr_tick(void)
     ticks_elapsed += tick_rate;
 }
 
-/// Get the number of ms elapsed since power on
+/// Get the number of ticks elapsed since power on
 ///
 /// @return the ticks elapsed since power on
 uint32_t time_mgr_get_ticks_elapsed(void)
