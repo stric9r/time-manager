@@ -5,6 +5,17 @@ This allowed for 1ms worth of ticks ~391 between interrupts; which allowed the 5
 
 This allowed for pretty good accuracy and precision.  Keep in mind that the closer the interrupt is to the clock source the less accurate/precise this module will be.
 
+It is advised to not have any timer over 4294967295 ticks (aka 0xFFFFFFFF).  A single variable rollover will be captured, but a second rollover would not be.  
+To be safe, keep it in the confines of a UINT32_MAX. 
+
+To give you an idea, UINT32_MAX ticks is about:
+- 49 days @ 1 milli-second ticks
+- 4.97 days @ 100 micro-second ticks
+- 1.19 hours @ 1 micro-second ticks
+- 7.15 minutes @ 100 nano-second ticks
+- 4.29 seconds @ 1 nano-second ticks
+
+
 ## Use / Example
 
 ```
