@@ -29,7 +29,7 @@ void time_mgr_tick(void)
     ticks_elapsed += tick_rate;
 }
 
-/// Get the number of ticks elapsed since power on
+/// Get the number of ms elapsed since power on
 ///
 /// @return the ticks elapsed since power on
 uint32_t time_mgr_get_ticks_elapsed(void)
@@ -47,12 +47,8 @@ void time_mgr_set_timer(time_mgr_timer_t * const p_timer,
     if(NULL != p_timer)
     {
 
-        uint32_t const end_ticks = timer_ticks + ticks_elapsed;
-
-        // Check if the end time will overflow
-        p_timer->b_overflow = (end_ticks < ticks_elapsed);
-
-        p_timer->end_ticks = end_ticks;
+        p_timer->start_ticks = timer_ticks;
+        p_timer->end_ticks = timer_ticks + ticks_elapsed;
     }
 }
 
@@ -67,13 +63,21 @@ bool time_mgr_get_timer_expired(time_mgr_timer_t const * const p_timer)
 
     if(NULL != p_timer)
     {
-        // If this timer crosses a roll over event, adjust the comparison
-        uint32_t adjust_ticks = p_timer->b_overflow ? UINT32_MAX : 0;
 
-        ret_val = ((adjust_ticks - ticks_elapsed) >= p_timer->end_ticks);
+        // Normal operation, no roll over expected before timer expires
+        if(p_timer->start_ticks <=  p_timer->end_ticks)
+        {
+            ret_val = ticks_elapsed >= p_timer->end_ticks;
+        }
+        // Timer will expire after overflow
+        else
+        {
+            // Check if ticks_elapsed has rolled over yet AND then compare
+            // against end_ticks
+            ret_val = (ticks_elapsed < p_timer->start_ticks) && ticks_elapsed <= p_timer->end_ticks;
+        }
+
     }
 
     return ret_val;
 }
-
-
