@@ -12,7 +12,7 @@
 /// Structure to store timer data
 typedef struct
 {
-    bool b_overflow;
+    uint32_t start_ticks;
     uint32_t end_ticks;
 } time_mgr_timer_t;
 
