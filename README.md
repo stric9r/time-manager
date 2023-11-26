@@ -1,6 +1,6 @@
 # time-manager
 Tick based time manager. Use case is a single peripheral timer ticks this module, allowing for multiple timers to be tracked for expiration.
-Precision depends on how fast your main clock is.  This was tested with a 50Mhz clock source, with the timer prescaled down by 128 (or 390.625khz). 
+Accuracy depends on how fast your main clock is.  This was tested with a 50Mhz clock source, with the timer prescaled down by 128 (or 390.625khz). 
 This allowed for 1ms worth of ticks ~391 between interrupts; which allowed the 50Mhz clock to have 50k ticks (20ns per tick) to poll.
 
 This allowed for pretty good accuracy and precision.  Keep in mind that the closer the interrupt is to the clock source the less accurate/precise this module will be.
@@ -10,7 +10,7 @@ This allowed for pretty good accuracy and precision.  Keep in mind that the clos
 ```
 #include "time_mgr.h"
 ...
-#deinfe TIMER_MGR_RATE_MS 1u
+#define TIMER_MGR_RATE_MS 1u
 #define SEC_IN_MS 1000u
 ...
 void main(...)
